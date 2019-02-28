@@ -39,6 +39,18 @@ class CompareFiles(DirectoryPaneCommand):
     def is_visible(self):
         return len(self.get_chosen_files()) == 2
 
+class CompareSelectedFiles(DirectoryPaneCommand):
+    def __call__(self):
+        selectedFile1 = self.pane.window.get_panes()[0].get_selected_files()[0]
+        selectedFile2 = self.pane.window.get_panes()[1].get_selected_files()[0]
+        ComparisonToolRunner.compare_files(selectedFile1, selectedFile2)
+        pass
+
+    def is_visible(self):
+        leftPane = self.pane.window.get_panes()[0]
+        rightPane = self.pane.window.get_panes()[1]
+        return len(leftPane.get_selected_files()) == 1 and len(rightPane.get_selected_files()) == 1
+
 class ComparisonToolRunner:
     @staticmethod
     def compare_files(lhsFile: str, rhsFile: str):
